@@ -3,20 +3,29 @@
 #include "main.h"
 
 /**
- * main - check the code
+ * main - Entry point of the program.
+ * @argc: The number of command-line arguments.
+ * @argv: An array of pointers to the command-line arguments.
  *
- * Return: Always 0.
+ * Return: 0 on success, 1 on failure.
  */
-int main(int ac, char **av)
+int main(int argc, char **argv)
 {
-    int res;
+	int res;
 
-    if (ac != 3)
-    {
-        dprintf(2, "Usage: %s filename text\n", av[0]);
-        exit(1);
-    }
-    res = append_text_to_file(av[1], av[2]);
-    printf("-> %i)\n", res);
-    return (0);
+	if (argc != 3)
+	{
+		fprintf(stderr, "Usage: %s filename text\n", argv[0]);
+		return (1);
+	}
+
+	res = append_text_to_file(argv[1], argv[2]);
+	if (res == -1)
+	{
+		perror("Error appending text to file");
+		return (1);
+	}
+
+	printf("Text appended successfully.\n");
+	return (0);
 }
