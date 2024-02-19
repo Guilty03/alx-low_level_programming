@@ -1,43 +1,45 @@
+#include "search_algos.h"
+#include <math.h>
+
+/**
+ * linear_skip - Searches for a value in a sorted skip list of integers
+ * @list: Pointer to the head of the skip list to search in
+ * @value: Value to search for
+ *
+ * Return: Pointer to the first node where value is located,
+ *         or NULL if value is not present in list or if head is NULL
+ */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-    skiplist_t *express, *prev;
+    skiplist_t *current, *express;
 
     if (list == NULL)
         return NULL;
 
     express = list->express;
-    prev = list;
+    current = list;
 
     while (express && express->n < value)
     {
-        printf("Value checked at index [%lu] = [%d]\n",
-               express->index, express->n);
-        prev = express;
+        printf("Value checked at index [%lu] = [%d]\n", express->index, express->n);
+        current = express;
         express = express->express;
     }
 
-    if (express == NULL)
+    printf("Value found between indexes [%lu] and [%lu]\n", current->index, express ? express->index : current->index);
+    printf("Value checked at index [%lu] = [%d]\n", current->index, current->n);
+
+    while (current && current->n < value)
     {
-        express = prev;
-        while (express->next)
-            express = express->next;
+        printf("Value checked at index [%lu] = [%d]\n", current->index, current->n);
+        current = current->next;
     }
 
-    printf("Value found between indexes [%lu] and [%lu]\n",
-           prev->index, express->index);
-
-    while (prev && prev->n < value)
+    if (current && current->n == value)
     {
-        printf("Value checked at index [%lu] = [%d]\n",
-               prev->index, prev->n);
-        prev = prev->next;
+        printf("Value checked at index [%lu] = [%d]\n", current->index, current->n);
+        return current;
     }
 
-    if (prev == NULL || prev->n != value)
-        return NULL;
-
-    printf("Value checked at index [%lu] = [%d]\n",
-           prev->index, prev->n);
-
-    return prev;
+    return NULL;
 }
